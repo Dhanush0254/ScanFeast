@@ -1,0 +1,28 @@
+<<<<<<< HEAD
+services:
+  - type: web
+    name: scanfeast
+    env: docker
+    plan: free
+    branch: master
+    dockerfilePath: Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+=======
+services:
+  - type: web
+    name: scanfeast
+    env: docker
+    plan: free
+    branch: master
+    dockerfilePath: Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+
+>>>>>>> f270a7709bf40b26d93085fd0d20184ac50d600a

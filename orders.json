@@ -1,0 +1,17 @@
+[
+    {
+        "user": "23QMA6704",
+        "items": {
+            "Salad": {
+                "price": 60,
+                "quantity": 2
+            },
+            "GulabJamun(2 pcs)": {
+                "price": 60,
+                "quantity": 3
+            }
+        },
+        "total": 300,
+        "timestamp": "24 Apr 2025, 10:53 PM"
+    }
+]
