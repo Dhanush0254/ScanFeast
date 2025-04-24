@@ -8,44 +8,38 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/vendor/autoload.php';
 
-// Load .env file
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+// Load .env only in local dev (optional)
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+}
 
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     $user = $_SESSION['username'] ?? 'Guest';
 
-    // Store order data in a JSON file
     $orderData = [
         'user' => $user,
         'items' => $_SESSION['cart'],
         'total' => 0,
         'timestamp' => date("d M Y, h:i A"),
-        
     ];
 
-    // Calculate total price
+    // Calculate total
     $total = 0;
     foreach ($_SESSION['cart'] as $item => $details) {
         $total += $details['price'] * $details['quantity'];
     }
-
     $orderData['total'] = $total;
-    $ttotal = $total + 100; // Adding tax
-    $_SESSION['ttotal'] = $ttotal; // Store total with tax in session
-    // Store order in a JSON file
-    $orderFile = 'orders.json';
-    if (file_exists($orderFile)) {
-        $existingOrders = json_decode(file_get_contents($orderFile), true);
-    } else {
-        $existingOrders = [];
-    }
+    $ttotal = $total + 100;
+    $_SESSION['ttotal'] = $ttotal;
 
-    // Append new order to existing orders
+    // Store order in file
+    $orderFile = 'orders.json';
+    $existingOrders = file_exists($orderFile) ? json_decode(file_get_contents($orderFile), true) : [];
     $existingOrders[] = $orderData;
     file_put_contents($orderFile, json_encode($existingOrders, JSON_PRETTY_PRINT));
 
-    // Prepare email message
+    // Create email message
     $message = "
     <h2 style='color:#333;'>🍽️ New Order Notification - SCANFEAST</h2>
     <p><strong>Customer:</strong> {$user}</p>
@@ -98,23 +92,21 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host       = $_ENV['MAIL_HOST'];
+        $mail->Host       = getenv('MAIL_HOST');
         $mail->SMTPAuth   = true;
-        $mail->Username   = $_ENV['MAIL_USERNAME'];
-        $mail->Password   = $_ENV['MAIL_PASSWORD'];
-        $mail->SMTPSecure = $_ENV['MAIL_ENCRYPTION'];
-        $mail->Port       = $_ENV['MAIL_PORT'];
+        $mail->Username   = getenv('MAIL_USERNAME');
+        $mail->Password   = getenv('MAIL_PASSWORD');
+        $mail->SMTPSecure = getenv('MAIL_ENCRYPTION');
+        $mail->Port       = getenv('MAIL_PORT');
 
-        $mail->setFrom($_ENV['MAIL_FROM_ADDRESS'], $_ENV['MAIL_FROM_NAME']);
-        $mail->addAddress($_ENV['MAIL_TO_ADDRESS'], $_ENV['MAIL_TO_NAME']);
+        $mail->setFrom(getenv('MAIL_FROM_ADDRESS'), getenv('MAIL_FROM_NAME'));
+        $mail->addAddress(getenv('MAIL_TO_ADDRESS'), getenv('MAIL_TO_NAME'));
 
         $mail->isHTML(true);
         $mail->Subject = 'New Order from SCANFEAST';
         $mail->Body    = $message;
 
         $mail->send();
-
-        // Clear cart after successful order
         $_SESSION['cart'] = [];
         echo "<script>alert('Thank you for your order! Email sent successfully.'); window.location.href='payment.php';</script>";
     } catch (Exception $e) {
