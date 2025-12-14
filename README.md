@@ -107,5 +107,4 @@ Built with ❤️ by:
 
 ScanFeast demonstrates a flat-file system using `orders.json` instead of a traditional database. While this approach is fast and simple for small-scale projects, it is **not intended for large, high-traffic restaurant systems**. For production use, a proper database solution such as **MySQL** or **PostgreSQL** is recommended.
 
-```
 
