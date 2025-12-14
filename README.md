@@ -1,4 +1,3 @@
-````markdown
 # ScanFeast 🍔📱
 
 Welcome to **ScanFeast**!
@@ -8,7 +7,7 @@ Welcome to **ScanFeast**!
 Waiting for physical menus and flagging down waiters can be a hassle. ScanFeast solves this by letting customers control the entire dining experience from their own phones — from picking a burger to paying the bill.
 
 > **Status:** 🚀 Ready for Deployment  
-> **Demo:** [Insert Link Here]
+> **Demo:** https://scanfeast.onrender.com
 
 ---
 
@@ -44,7 +43,7 @@ A `Dockerfile` is included so you can spin this up instantly without configuring
    ```bash
    git clone https://github.com/dhanush0254/ScanFeast.git
    cd ScanFeast
-````
+
 
 2. **Build & Run**
 
@@ -109,4 +108,4 @@ Built with ❤️ by:
 ScanFeast demonstrates a flat-file system using `orders.json` instead of a traditional database. While this approach is fast and simple for small-scale projects, it is **not intended for large, high-traffic restaurant systems**. For production use, a proper database solution such as **MySQL** or **PostgreSQL** is recommended.
 
 ```
-```
+
